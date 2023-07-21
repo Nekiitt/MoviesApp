@@ -13,6 +13,9 @@
 		3B8937212A6AB390007E4247 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B89371F2A6AB390007E4247 /* Main.storyboard */; };
 		3B8937232A6AB391007E4247 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B8937222A6AB391007E4247 /* Assets.xcassets */; };
 		3B8937262A6AB391007E4247 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B8937242A6AB391007E4247 /* LaunchScreen.storyboard */; };
+		3B8937302A6AC653007E4247 /* MosaicLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B89372F2A6AC653007E4247 /* MosaicLayout.swift */; };
+		3B8937322A6ACA79007E4247 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8937312A6ACA79007E4247 /* Utilities.swift */; };
+		3B8937342A6ACC0A007E4247 /* MosaicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8937332A6ACC0A007E4247 /* MosaicCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		3B8937222A6AB391007E4247 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B8937252A6AB391007E4247 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B8937272A6AB391007E4247 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B89372F2A6AC653007E4247 /* MosaicLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MosaicLayout.swift; sourceTree = "<group>"; };
+		3B8937312A6ACA79007E4247 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		3B8937332A6ACC0A007E4247 /* MosaicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MosaicCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +65,9 @@
 				3B8937192A6AB390007E4247 /* AppDelegate.swift */,
 				3B89371B2A6AB390007E4247 /* SceneDelegate.swift */,
 				3B89371D2A6AB390007E4247 /* ViewController.swift */,
+				3B8937332A6ACC0A007E4247 /* MosaicCell.swift */,
+				3B89372F2A6AC653007E4247 /* MosaicLayout.swift */,
+				3B8937312A6ACA79007E4247 /* Utilities.swift */,
 				3B89371F2A6AB390007E4247 /* Main.storyboard */,
 				3B8937222A6AB391007E4247 /* Assets.xcassets */,
 				3B8937242A6AB391007E4247 /* LaunchScreen.storyboard */,
@@ -141,6 +150,9 @@
 				3B89371E2A6AB390007E4247 /* ViewController.swift in Sources */,
 				3B89371A2A6AB390007E4247 /* AppDelegate.swift in Sources */,
 				3B89371C2A6AB390007E4247 /* SceneDelegate.swift in Sources */,
+				3B8937342A6ACC0A007E4247 /* MosaicCell.swift in Sources */,
+				3B8937322A6ACA79007E4247 /* Utilities.swift in Sources */,
+				3B8937302A6AC653007E4247 /* MosaicLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
