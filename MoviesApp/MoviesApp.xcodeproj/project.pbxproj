@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B2724B42A6F0C8F002CA89A /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2724B32A6F0C8F002CA89A /* SearchModel.swift */; };
 		3B89371A2A6AB390007E4247 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8937192A6AB390007E4247 /* AppDelegate.swift */; };
 		3B89371C2A6AB390007E4247 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B89371B2A6AB390007E4247 /* SceneDelegate.swift */; };
 		3B89371E2A6AB390007E4247 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B89371D2A6AB390007E4247 /* ViewController.swift */; };
@@ -17,10 +18,13 @@
 		3B8937322A6ACA79007E4247 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8937312A6ACA79007E4247 /* Utilities.swift */; };
 		3B8937342A6ACC0A007E4247 /* MosaicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8937332A6ACC0A007E4247 /* MosaicCell.swift */; };
 		3B8937372A6EFEC2007E4247 /* AlomafireProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8937362A6EFEC2007E4247 /* AlomafireProvider.swift */; };
+		3B89373A2A6F037B007E4247 /* MoviesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8937392A6F037B007E4247 /* MoviesModel.swift */; };
+		3B89373C2A6F03A2007E4247 /* Constans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B89373B2A6F03A2007E4247 /* Constans.swift */; };
 		C91648110D805E0D96385C76 /* Pods_MoviesApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 450B300C63E44D3AFA1BCA46 /* Pods_MoviesApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B2724B32A6F0C8F002CA89A /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
 		3B8937162A6AB390007E4247 /* MoviesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoviesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B8937192A6AB390007E4247 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B89371B2A6AB390007E4247 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -33,6 +37,8 @@
 		3B8937312A6ACA79007E4247 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		3B8937332A6ACC0A007E4247 /* MosaicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MosaicCell.swift; sourceTree = "<group>"; };
 		3B8937362A6EFEC2007E4247 /* AlomafireProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlomafireProvider.swift; sourceTree = "<group>"; };
+		3B8937392A6F037B007E4247 /* MoviesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesModel.swift; sourceTree = "<group>"; };
+		3B89373B2A6F03A2007E4247 /* Constans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constans.swift; sourceTree = "<group>"; };
 		450B300C63E44D3AFA1BCA46 /* Pods_MoviesApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoviesApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CF6DB01AD7B60A00B0DFAF1 /* Pods-MoviesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesApp.release.xcconfig"; path = "Target Support Files/Pods-MoviesApp/Pods-MoviesApp.release.xcconfig"; sourceTree = "<group>"; };
 		CDADE6342469B63A1B80552B /* Pods-MoviesApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesApp.debug.xcconfig"; path = "Target Support Files/Pods-MoviesApp/Pods-MoviesApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -56,7 +62,6 @@
 				CDADE6342469B63A1B80552B /* Pods-MoviesApp.debug.xcconfig */,
 				9CF6DB01AD7B60A00B0DFAF1 /* Pods-MoviesApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -84,6 +89,7 @@
 				3B8937192A6AB390007E4247 /* AppDelegate.swift */,
 				3B89371B2A6AB390007E4247 /* SceneDelegate.swift */,
 				3B89371D2A6AB390007E4247 /* ViewController.swift */,
+				3B8937382A6F0351007E4247 /* Models */,
 				3B8937352A6EFE46007E4247 /* Services */,
 				3B8937332A6ACC0A007E4247 /* MosaicCell.swift */,
 				3B89372F2A6AC653007E4247 /* MosaicLayout.swift */,
@@ -100,8 +106,19 @@
 			isa = PBXGroup;
 			children = (
 				3B8937362A6EFEC2007E4247 /* AlomafireProvider.swift */,
+				3B89373B2A6F03A2007E4247 /* Constans.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		3B8937382A6F0351007E4247 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3B8937392A6F037B007E4247 /* MoviesModel.swift */,
+				3B2724B32A6F0C8F002CA89A /* SearchModel.swift */,
+			);
+			name = Models;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		C0BCBF57185983D397D8BF1B /* Frameworks */ = {
@@ -227,7 +244,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B89373A2A6F037B007E4247 /* MoviesModel.swift in Sources */,
 				3B89371E2A6AB390007E4247 /* ViewController.swift in Sources */,
+				3B89373C2A6F03A2007E4247 /* Constans.swift in Sources */,
+				3B2724B42A6F0C8F002CA89A /* SearchModel.swift in Sources */,
 				3B89371A2A6AB390007E4247 /* AppDelegate.swift in Sources */,
 				3B89371C2A6AB390007E4247 /* SceneDelegate.swift in Sources */,
 				3B8937342A6ACC0A007E4247 /* MosaicCell.swift in Sources */,

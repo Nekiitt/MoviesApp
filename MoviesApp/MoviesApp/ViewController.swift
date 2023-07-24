@@ -10,11 +10,16 @@ class ViewController: UIViewController {
 
     var myCollectionView: UICollectionView?
     
+    let alomafireProvider: AlomafireProviderProtocol = AlomafireProvider()
+    
+    var searchModel: [SearchModel]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let view = UIView()
         view.backgroundColor = .white
+        getMovies(nameMovies: "home")
         
         let mosaicLayout = MosaicLayout()
         myCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mosaicLayout)// Add minimum line spacing
@@ -28,21 +33,33 @@ class ViewController: UIViewController {
         myCollectionView?.register(MosaicCell.self, forCellWithReuseIdentifier: MosaicCell.identifer)
         view.addSubview(myCollectionView ?? UICollectionView())
         self.view = view
-        
+     
     }
     
+    func getMovies(nameMovies: String) {
+        Task {
+            do {
+                let moviesModel = try await alomafireProvider.getMovies(nameMovies: nameMovies)
+                searchModel = moviesModel.search.map { SearchModel(data: $0) }
+                myCollectionView?.reloadData()
+            }
+            catch {
+                print(error)
+            }
+        }
+    }
 }
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        return searchModel?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let myCell = collectionView.dequeueReusableCell(withReuseIdentifier: MosaicCell.identifer, for: indexPath)
-        
-    
-        return myCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MosaicCell.identifer, for: indexPath) as? MosaicCell else { return UICollectionViewCell() }
+        guard let searchInfo = searchModel else { return cell}
+        cell.configure(model: searchInfo[indexPath.row])
+        return cell
     }
 }
 
