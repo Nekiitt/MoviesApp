@@ -8,6 +8,7 @@
 import UIKit
 
 class MosaicCell: UICollectionViewCell {
+    
     static let identifer = "kMosaicCollectionViewCell"
 
     var imageView = UIImageView()
