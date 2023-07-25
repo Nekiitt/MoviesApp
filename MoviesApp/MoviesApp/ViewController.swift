@@ -4,6 +4,7 @@
 //
 //  Created by Dubrouski Nikita on 21.07.23.
 //
+
 import UIKit
 
 class ViewController: UIViewController {
@@ -45,10 +46,21 @@ class ViewController: UIViewController {
         Task {
             do {
                 let moviesModel = try await alomafireProvider.getMovies(nameMovies: nameMovies, page: page)
-                searchModel += moviesModel.search.map { SearchModel(data: $0) }
+                let newMovies = moviesModel.search.map { SearchModel(data: $0) }
+                let startIndex = searchModel.count // Starting index of newly loaded items
              
+                DispatchQueue.main.async {
+                    // Append new movies to the data source
+                    self.searchModel += newMovies
+
+                    // Create index paths for the new items
+                    let indexPaths = (startIndex..<startIndex + newMovies.count).map { IndexPath(item: $0, section: 0) }
+                    
+                    // Insert the new items
+                    self.myCollectionView?.insertItems(at: indexPaths)
+                }
+
                 currentPage += 1 // Increment the current page
-                myCollectionView?.reloadData()
                 isFetchingMovies = false // Reset fetching flag to false
             } catch {
                 print(error)
