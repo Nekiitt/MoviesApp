@@ -7,29 +7,26 @@
 
 import UIKit
 
-class ViewController: UIViewController {
 
+class ViewController: UIViewController, MovieListView {
+    
     var myCollectionView: UICollectionView?
-    let alomafireProvider: AlomafireProviderProtocol = AlomafireProvider()
+    
+    var presenter: MovieListPresenter?
     
     var searchModel: [SearchModel] = []
-    var currentPage = 1 // Current page of movies
-    var isFetchingMovies = false // Track if movies are being fetched
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let view = UIView()
         view.backgroundColor = .gray
-        getMovies(nameMovies: "home", page: currentPage)
         
         let mosaicLayout = MosaicLayout()
         
         myCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mosaicLayout)
-        
         myCollectionView?.backgroundColor = UIColor.clear
-        
+    
         myCollectionView?.dataSource = self
         myCollectionView?.delegate = self
         
@@ -37,40 +34,27 @@ class ViewController: UIViewController {
         
         view.addSubview(myCollectionView ?? UICollectionView())
         self.view = view
+        
+        presenter = MovieListPresenterImpl(view: self, interactor: MovieListInteractorImpl(alomafireProvider: AlomafireProvider()))
+        presenter?.viewDidLoad()
     }
     
-    func getMovies(nameMovies: String, page: Int) {
-        guard !isFetchingMovies else { return } // Return if movies are already being fetched
-        isFetchingMovies = true // Set fetching flag to true
-        
-        Task {
-            do {
-                let moviesModel = try await alomafireProvider.getMovies(nameMovies: nameMovies, page: page)
-                let newMovies = moviesModel.search.map { SearchModel(data: $0) }
-                let startIndex = searchModel.count // Starting index of newly loaded items
-             
-                DispatchQueue.main.async {
-                    // Append new movies to the data source
-                    self.searchModel += newMovies
-
-                    // Create index paths for the new items
-                    let indexPaths = (startIndex..<startIndex + newMovies.count).map { IndexPath(item: $0, section: 0) }
-                    
-                    // Insert the new items
-                    self.myCollectionView?.insertItems(at: indexPaths)
-                }
-
-                currentPage += 1 // Increment the current page
-                isFetchingMovies = false // Reset fetching flag to false
-            } catch {
-                print(error)
-            }
+    func showMovies(_ movies: [SearchModel], startIndex: Int) {
+        DispatchQueue.main.async {
+            let indexPaths = (startIndex..<startIndex+movies.count).map { IndexPath(item: $0, section: 0) }
+            self.searchModel += movies
+            self.myCollectionView?.insertItems(at: indexPaths)
         }
+    }
+    
+    func showError(_ error: Error) {
+        print(error)
     }
 }
 
 extension ViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    
+func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return searchModel.count
     }
     
@@ -87,16 +71,10 @@ extension ViewController: UICollectionViewDataSource {
 }
 
 extension ViewController: UICollectionViewDelegate {
- 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        // Check if the last cell is about to be displayed
         if indexPath.item == searchModel.count - 1 {
-            // Load new movies
-            getMovies(nameMovies: "home", page: currentPage)
+            presenter?.loadMoreMovies()
+            
         }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       print("User tapped on item \(indexPath.item)")
     }
 }
