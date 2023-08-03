@@ -42,7 +42,7 @@ class MosaicLayout: UICollectionViewLayout {
         let cvWidth = collectionView.bounds.size.width
         
         while currentIndex < count {
-            let segmentFrame = CGRect(x: 0, y: lastFrame.maxY + 1.0, width: cvWidth, height: 200.0)
+            let segmentFrame = CGRect(x: 0, y: lastFrame.maxY + 1.0, width: cvWidth, height: 300.0)
             
             var segmentRects = [CGRect]()
             switch segment {

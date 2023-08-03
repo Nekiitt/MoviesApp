@@ -27,6 +27,7 @@ class MosaicCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.addSubview(imageView)
+        self.layer.cornerRadius = 10
         
         // Use a random background color.
         let redColor = CGFloat(arc4random_uniform(255)) / 255.0

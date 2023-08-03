@@ -60,6 +60,7 @@ class MovieListPresenterImpl: MovieListPresenter {
                 self.view?.showError(error)
             }
         }
+    
     }
     
     func loadMoreMovies() {
@@ -67,7 +68,8 @@ class MovieListPresenterImpl: MovieListPresenter {
     }
     
     func didSelectMovie(at index: Int) {
-        
+        let selectedMovie = searchModel[index]
+        print(selectedMovie.imdbID)
     }
 }
 

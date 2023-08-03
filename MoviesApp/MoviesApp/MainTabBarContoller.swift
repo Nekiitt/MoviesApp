@@ -19,7 +19,7 @@ class MainTabBarContoller: UITabBarController {
     
     func generateTabBar() {
         
-            viewControllers = [generateVC(viewController: ViewController(), image: UIImage(systemName: "house.fill"))]//generateVC(viewController: <#T##UIViewController#>, image: <#T##UIImage?#>)]
+            viewControllers = [generateVC(viewController: ViewController(), image: UIImage(systemName: "house.fill")), generateVC(viewController: InfoAboutMoviesViewController(), image: UIImage(systemName: "star"))]//generateVC(viewController: <#T##UIViewController#>, image: <#T##UIImage?#>)]
         }
 
         func generateVC(viewController: UIViewController, image: UIImage?) -> UIViewController {
@@ -29,8 +29,8 @@ class MainTabBarContoller: UITabBarController {
 
         func setTabBarAppearance() {
             tabBar.backgroundColor = .white
-            tabBar.tintColor = UIColor.gray
-            tabBar.unselectedItemTintColor = UIColor.red
+            tabBar.tintColor = UIColor.red
+            tabBar.unselectedItemTintColor = UIColor.gray
         }
 
 }

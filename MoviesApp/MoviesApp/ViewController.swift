@@ -20,7 +20,7 @@ class ViewController: UIViewController, MovieListView {
         super.viewDidLoad()
         
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = .black
         
         let mosaicLayout = MosaicLayout()
         
@@ -50,6 +50,8 @@ class ViewController: UIViewController, MovieListView {
     func showError(_ error: Error) {
         print(error)
     }
+    
+  
 }
 
 extension ViewController: UICollectionViewDataSource {
@@ -75,6 +77,13 @@ extension ViewController: UICollectionViewDelegate {
         if indexPath.item == searchModel.count - 1 {
             presenter?.loadMoreMovies()
             
+            
         }
     }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter?.didSelectMovie(at: indexPath.item)
+      
+        
+    }
 }
+
