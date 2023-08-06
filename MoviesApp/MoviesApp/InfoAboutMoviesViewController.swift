@@ -1,16 +1,11 @@
-//
-//  InfoAboutMoviesViewController.swift
-//  MoviesApp
-//
-//  Created by Dubrouski Nikita on 3.08.23.
-//
+
 
 
 import UIKit
 
 class InfoAboutMoviesViewController: UIViewController {
     
-    var movieDetails: MovieDetails?
+    var selectedMovie: InfoAboutSelectMovieModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,49 +14,93 @@ class InfoAboutMoviesViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = .white
-      
         view.addSubview(scrollView)
         
-        // Add constraints for the scroll view to fill the view
+        // Create a container view
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(containerView)
+        
+        // Create a movie title label
+        let titleLabel = UILabel()
+        titleLabel.textAlignment = .center
+        titleLabel.text = "\(selectedMovie?.title ?? "no")"
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(titleLabel)
+        
+        // Create an image view
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: selectedMovie?.poster ?? "")
+        imageView.backgroundColor = .black
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(imageView)
+        
+        // Create a stack view
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 100
+        stackView.alignment = .center
+        containerView.addSubview(stackView)
+        
+        // Create a rating label
+        let ratingLabel = UILabel()
+        ratingLabel.text = "\(selectedMovie?.rated ?? "0.0") / 10"
+        ratingLabel.textAlignment = .center
+        ratingLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Create a year label
+        let yearLabel = UILabel()
+        yearLabel.text = "\(selectedMovie?.year ?? "0")"
+        yearLabel.textAlignment = .center
+        yearLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add labels to the stack view
+        stackView.addArrangedSubview(ratingLabel)
+        stackView.addArrangedSubview(yearLabel)
+        
+        // Create a plot label
+        let plotLabel = UILabel()
+        plotLabel.text = selectedMovie?.plot
+        plotLabel.numberOfLines = 0
+        plotLabel.textAlignment = .center
+        plotLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(plotLabel)
+        
+        // Set constraints for the views
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        // Create a label
-        let label = UILabel()
-        label.text = "Your label text"
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(label)
-        
-        // Add constraints for the label
-        NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
-            label.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            label.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
-            label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            label.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        // Create an image view
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "your_image_name")
-        imageView.backgroundColor = .black
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(imageView)
-        
-        // Add constraints for the image view
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20),
-            imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
-            imageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            imageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: 0.5)
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            containerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            
+            imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            imageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            imageView.heightAnchor.constraint(equalToConstant: view.frame.height / 2),
+            
+            stackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            stackView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            
+            ratingLabel.widthAnchor.constraint(equalToConstant: 100),
+            yearLabel.widthAnchor.constraint(equalToConstant: 100),
+            
+            plotLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
+            plotLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            plotLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            plotLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
         ])
     }
-    
-    
 }

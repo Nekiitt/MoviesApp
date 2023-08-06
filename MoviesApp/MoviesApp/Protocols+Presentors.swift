@@ -1,10 +1,3 @@
-//
-//  Protocols.swift
-//  MoviesApp
-//
-//  Created by Dubrouski Nikita on 27.07.23.
-//
-
 import Foundation
 
 protocol MovieListView: AnyObject {
@@ -16,13 +9,14 @@ protocol MovieListView: AnyObject {
 protocol MovieListPresenter {
     func viewDidLoad()
     func loadMoreMovies()
-    func didSelectMovie(at index: Int)
+    func getInfoForSelectedMovie(at index: Int)
+    
 }
 
 protocol MovieListInteractor {
     func getMovies(nameMovies: String, page: Int, completion: @escaping (Result<[SearchModel], Error>) -> Void)
+    func getInfoForSelectedMovie(idFilm: String, completion: @escaping (Result<InfoAboutSelectMovieModel, Error>) -> Void)
 }
-
 
 class MovieListPresenterImpl: MovieListPresenter {
     weak var view: MovieListView?
@@ -42,7 +36,6 @@ class MovieListPresenterImpl: MovieListPresenter {
     }
     
     func loadMovies() {
-        
         guard !isFetchingMovies else { return }
         isFetchingMovies = true
             
@@ -67,10 +60,21 @@ class MovieListPresenterImpl: MovieListPresenter {
         loadMovies()
     }
     
-    func didSelectMovie(at index: Int) {
-        let selectedMovie = searchModel[index]
-        print(selectedMovie.imdbID)
+    func getInfoForSelectedMovie(at index: Int) {
+        guard index < searchModel.count else { return }
+        let searchInfo = searchModel[index]
+        interactor.getInfoForSelectedMovie(idFilm: searchInfo.imdbID) { result in
+            switch result {
+            case .success(let movieModel):
+                // Handle the movie model data
+                print(movieModel)
+            case .failure(let error):
+                // Handle the error
+                print(error)
+            }
+        }
     }
+    
 }
 
 class MovieListInteractorImpl: MovieListInteractor {
@@ -86,6 +90,17 @@ class MovieListInteractorImpl: MovieListInteractor {
                 let moviesModel = try await alomafireProvider.getMovies(nameMovies: nameMovies, page: page)
                 let newMovies = moviesModel.search.map { SearchModel(data: $0) }
                 completion(.success(newMovies))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getInfoForSelectedMovie(idFilm: String, completion: @escaping (Result<InfoAboutSelectMovieModel, Error>) -> Void) {
+        Task {
+            do {
+                let movieModel = try await alomafireProvider.getInfoForSelectMovie(IdFilm: idFilm)
+                completion(.success(movieModel))
             } catch {
                 completion(.failure(error))
             }

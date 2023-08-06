@@ -19,7 +19,9 @@ class MainTabBarContoller: UITabBarController {
     
     func generateTabBar() {
         
-            viewControllers = [generateVC(viewController: ViewController(), image: UIImage(systemName: "house.fill")), generateVC(viewController: InfoAboutMoviesViewController(), image: UIImage(systemName: "star"))]//generateVC(viewController: <#T##UIViewController#>, image: <#T##UIImage?#>)]
+            viewControllers = [
+                generateVC(viewController: ViewController(), image: UIImage(systemName: "house.fill"))]
+//                generateVC(viewController: InfoAboutMoviesViewController(), image: UIImage(systemName: "star"))]//generateVC(viewController: <#T##UIViewController#>, image: <#T##UIImage?#>)]
         }
 
         func generateVC(viewController: UIViewController, image: UIImage?) -> UIViewController {

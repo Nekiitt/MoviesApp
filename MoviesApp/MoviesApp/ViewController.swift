@@ -81,9 +81,13 @@ extension ViewController: UICollectionViewDelegate {
         }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenter?.didSelectMovie(at: indexPath.item)
-      
         
+        presenter?.getInfoForSelectedMovie(at: indexPath.item)
+        let selectedMovie = searchModel[indexPath.item]
+        let infoAboutMoviesViewController = InfoAboutMoviesViewController()
+          
+          present(infoAboutMoviesViewController, animated: true, completion: nil)
     }
 }
+
 
