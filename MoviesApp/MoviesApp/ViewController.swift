@@ -7,20 +7,28 @@
 
 import UIKit
 
+protocol SrartViewProtocol: AnyObject {
+    
+}
 
-class ViewController: UIViewController, MovieListView {
+class ViewController: UIViewController {
     
     var myCollectionView: UICollectionView?
     
-    var presenter: MovieListPresenter?
-    
+    var presenterOne: StartViewControllerProtocol?
+    var selectedMovie: InfoAboutSelectMovieModel?
     var searchModel: [SearchModel] = []
+    var didCloseInfoScreen: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .white
+        
+        presenterOne = StartViewControllerPresenter(view: self, alomafireProvider: AlomafireProvider(), modelSerchInfo: InfoAboutSelectMovieModel(title: "", year: "", rated: "", released: "", runtime: "", genre: "", director: "", writer: "", actors: "", plot: "", language: "", country: "", awards: "", poster: "", ratings: [], metascore: "", imdbRating: "", imdbVotes: "", imdbID: "", type: "", dvd: "", boxOffice: "", production: "", website: "", response: ""))
+        
+        presenterOne?.getMovies(nameMovies: "home", page: 1)
         
         let mosaicLayout = MosaicLayout()
         
@@ -35,8 +43,8 @@ class ViewController: UIViewController, MovieListView {
         view.addSubview(myCollectionView ?? UICollectionView())
         self.view = view
         
-        presenter = MovieListPresenterImpl(view: self, interactor: MovieListInteractorImpl(alomafireProvider: AlomafireProvider()))
-        presenter?.viewDidLoad()
+
+    
     }
     
     func showMovies(_ movies: [SearchModel], startIndex: Int) {
@@ -51,7 +59,7 @@ class ViewController: UIViewController, MovieListView {
         print(error)
     }
     
-  
+
 }
 
 extension ViewController: UICollectionViewDataSource {
@@ -75,19 +83,24 @@ func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection s
 extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == searchModel.count - 1 {
-            presenter?.loadMoreMovies()
-            
+            presenterOne?.loadMoreMovies()
             
         }
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        presenter?.getInfoForSelectedMovie(at: indexPath.item)
         let selectedMovie = searchModel[indexPath.item]
-        let infoAboutMoviesViewController = InfoAboutMoviesViewController()
-          
-          present(infoAboutMoviesViewController, animated: true, completion: nil)
+        
+        presenterOne?.getInfoForSelectMovie(id: selectedMovie.imdbID) { [weak self] movie in
+            self?.selectedMovie = movie
+            //необходимые действия после получения информации о фильме
+            DispatchQueue.main.async {
+                let infoAboutMoviesViewController = InfoAboutMoviesViewController()
+                infoAboutMoviesViewController.selectedMovie = movie
+                self?.present(infoAboutMoviesViewController, animated: true, completion: nil)
+            }
+        }
     }
+    
 }
-
-

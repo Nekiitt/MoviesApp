@@ -31,9 +31,15 @@ class InfoAboutMoviesViewController: UIViewController {
         
         // Create an image view
         let imageView = UIImageView()
-        imageView.image = UIImage(named: selectedMovie?.poster ?? "")
+        guard let url = URL(string: selectedMovie?.poster ?? "") else { return }
+        imageView.loadImage(from: url) { [weak self] image in
+            DispatchQueue.main.async {
+                imageView.image = image
+            }
+        }
         imageView.backgroundColor = .black
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(imageView)
         
