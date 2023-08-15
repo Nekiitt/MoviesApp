@@ -9,6 +9,11 @@ class InfoAboutMoviesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUi()
+        
+    }
+    
+    func setupUi() {
         // Create a scroll view
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,14 +26,12 @@ class InfoAboutMoviesViewController: UIViewController {
         scrollView.addSubview(containerView)
         
         // Create a movie title label
-        
         let titleLabel = UILabel()
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         titleLabel.textColor = .white
         titleLabel.font = UIFont(name: "Copperplate", size: 25)
         titleLabel.text = "\(selectedMovie?.title ?? "no")"
-        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(titleLabel)
         
@@ -40,25 +43,18 @@ class InfoAboutMoviesViewController: UIViewController {
                 imageView.image = image
             }
         }
+        
         imageView.backgroundColor = .black
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(imageView)
-        
-        // Create a blurView
-//        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
-//        blurView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.addSubview(blurView)
-//        // Create a blurWidthConstraint
-//        let blurWidthConstraint = blurView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1/5)
-//        NSLayoutConstraint.activate([blurWidthConstraint])
-        
+
         // Create a stack view
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.spacing = 100
+        stackView.spacing = 50
         stackView.alignment = .center
         containerView.addSubview(stackView)
         
@@ -70,23 +66,18 @@ class InfoAboutMoviesViewController: UIViewController {
         ratingLabel.layer.cornerRadius = 10
         ratingLabel.layer.borderColor = UIColor.red.cgColor
         ratingLabel.layer.borderWidth = 1.0 // Толщина рамки
+        ratingLabel.font = UIFont(name: "Copperplate", size: 20)
         ratingLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-//        let starImage = UIImage(systemName: "star.fill")
-//        let starImageView = UIImageView(image: starImage)
-//        starImageView.tintColor = .red
-//        starImageView.contentMode = .scaleAspectFit
-//        starImageView.translatesAutoresizingMaskIntoConstraints = false
-//        ratingLabel.addSubview(starImageView)
-        
+                
         // Create a year label
         let yearLabel = UILabel()
-        yearLabel.text = "\(selectedMovie?.year ?? "0")"
+        yearLabel.text = "\(selectedMovie?.released ?? "0")"
         yearLabel.textAlignment = .center
         yearLabel.textColor = .white
         yearLabel.layer.cornerRadius = 10
         yearLabel.layer.borderColor = UIColor.red.cgColor
         yearLabel.layer.borderWidth = 1.0 // Толщина рамки
+        yearLabel.font = UIFont(name: "Copperplate", size: 20)
         yearLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // Add labels to the stack view
@@ -97,35 +88,64 @@ class InfoAboutMoviesViewController: UIViewController {
         let plotLabel = UILabel()
         plotLabel.text = selectedMovie?.plot
         plotLabel.numberOfLines = 0
-        plotLabel.textAlignment = .center
+        plotLabel.textAlignment = .justified
         plotLabel.textColor = .white
+        plotLabel.font = UIFont(name: "Copperplate", size: 20)
         plotLabel.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(plotLabel)
         
-        let runTimeLabel = UILabel()
-        runTimeLabel.backgroundColor = .blue
-        runTimeLabel.text = selectedMovie?.runtime
-        runTimeLabel.numberOfLines = 1
-        runTimeLabel.textAlignment = .center
-        runTimeLabel.font = UIFont.systemFont(ofSize: 50)
-        runTimeLabel.textColor = .white
-        runTimeLabel.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
-        runTimeLabel.translatesAutoresizingMaskIntoConstraints = false
-        runTimeLabel.sizeToFit()
-        //blurView.contentView.addSubview(runTimeLabel)
-    
         let genreLabel = UILabel()
-        genreLabel.backgroundColor = .black
         genreLabel.text = selectedMovie?.genre
         genreLabel.numberOfLines = 1
         genreLabel.textAlignment = .center
         genreLabel.textColor = .white
-        genreLabel.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
+        genreLabel.font = UIFont(name: "Copperplate", size: 20)
+        genreLabel.layer.cornerRadius = 10
+        genreLabel.layer.borderColor = UIColor.red.cgColor
+        genreLabel.layer.borderWidth = 1.0 // Толщина рамки
         genreLabel.translatesAutoresizingMaskIntoConstraints = false
         genreLabel.sizeToFit()
-        //blurView.contentView.addSubview(genreLabel)
-      
-     
+        containerView.addSubview(genreLabel)
+        
+        let directorLabel = UILabel()
+        directorLabel.text = "Director: \(selectedMovie?.director ?? "-")"
+        directorLabel.numberOfLines = 1
+        directorLabel.textAlignment = .left
+        directorLabel.textColor = .white
+        directorLabel.font = UIFont(name: "Copperplate", size: 20)
+        directorLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(directorLabel)
+        
+        let actorsLabel = UILabel()
+        actorsLabel.text = "Actors: \(selectedMovie?.actors ?? "-")"
+        actorsLabel.numberOfLines = 0
+        actorsLabel.textAlignment = .left
+        actorsLabel.textColor = .white
+        actorsLabel.font = UIFont(name: "Copperplate", size: 20)
+        actorsLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(actorsLabel)
+        
+        let languageLabel = UILabel()
+        languageLabel.text = "Language: \(selectedMovie?.language ?? "-")"
+        languageLabel.numberOfLines = 0
+        languageLabel.textAlignment = .left
+        languageLabel.textColor = .white
+        languageLabel.font = UIFont(name: "Copperplate", size: 20)
+        languageLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(languageLabel)
+        
+        let runTimeLabel = UILabel()
+        runTimeLabel.text = "Duration: \(selectedMovie?.runtime ?? "-")"
+        runTimeLabel.numberOfLines = 1
+        runTimeLabel.textAlignment = .center
+        runTimeLabel.font = UIFont(name: "Copperplate", size: 20)
+        runTimeLabel.layer.cornerRadius = 10
+        runTimeLabel.layer.borderColor = UIColor.red.cgColor
+        runTimeLabel.layer.borderWidth = 1.0 // Толщина рамки
+        runTimeLabel.textColor = .white
+        runTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        runTimeLabel.sizeToFit()
+        containerView.addSubview(runTimeLabel)
         
         // Set constraints for the views
         NSLayoutConstraint.activate([
@@ -149,27 +169,45 @@ class InfoAboutMoviesViewController: UIViewController {
             imageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             imageView.heightAnchor.constraint(equalToConstant: view.frame.height / 2 + 150),
             
-//            blurView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-//            blurView.topAnchor.constraint(equalTo: imageView.topAnchor),
-//            blurView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
-//            blurWidthConstraint,
-          
-            
             stackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
             stackView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             
-            ratingLabel.widthAnchor.constraint(equalToConstant: 100),
-            yearLabel.widthAnchor.constraint(equalToConstant: 100),
-            
-//            starImageView.widthAnchor.constraint(equalToConstant: 20),
-//            starImageView.heightAnchor.constraint(equalToConstant: 20),
-//            starImageView.trailingAnchor.constraint(equalTo: ratingLabel.trailingAnchor, constant: -5),
-//            starImageView.centerYAnchor.constraint(equalTo: ratingLabel.centerYAnchor),
+            ratingLabel.widthAnchor.constraint(equalToConstant: 150),
+            yearLabel.widthAnchor.constraint(equalToConstant: 150),
+            ratingLabel.heightAnchor.constraint(equalToConstant: 30),
+            yearLabel.heightAnchor.constraint(equalToConstant: 30),
             
             plotLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
             plotLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             plotLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            plotLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
+            
+            genreLabel.topAnchor.constraint(equalTo: plotLabel.bottomAnchor, constant: 20),
+            genreLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            genreLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            genreLabel.heightAnchor.constraint(equalToConstant: 30),
+            
+            directorLabel.topAnchor.constraint(equalTo: genreLabel.bottomAnchor, constant: 20),
+            directorLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            directorLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            directorLabel.heightAnchor.constraint(equalToConstant: 30),
+           
+            actorsLabel.topAnchor.constraint(equalTo: directorLabel.bottomAnchor, constant: 20),
+            actorsLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            actorsLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+           
+            languageLabel.topAnchor.constraint(equalTo: actorsLabel.bottomAnchor, constant: 20),
+            languageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            languageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            languageLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            runTimeLabel.topAnchor.constraint(equalTo: languageLabel.bottomAnchor, constant: 20),
+            runTimeLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            runTimeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            runTimeLabel.heightAnchor.constraint(equalToConstant: 30),
+            runTimeLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
+            
+            
+            
         ])
     }
 }

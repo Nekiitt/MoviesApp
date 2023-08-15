@@ -16,8 +16,13 @@ struct InfoAboutSelectMovieModel: Codable {
     let poster: String
     let ratings: [Rating]
     let metascore, imdbRating, imdbVotes, imdbID: String
-    let type, dvd, boxOffice, production: String
-    let website, response: String
+    let type: String
+    let dvd: String?
+    let totalSeasons:String?
+    let boxOffice: String?
+    let production: String?
+    let website: String?
+    let response: String
 
     enum CodingKeys: String, CodingKey {
         case title = "Title"
@@ -43,6 +48,7 @@ struct InfoAboutSelectMovieModel: Codable {
         case production = "Production"
         case website = "Website"
         case response = "Response"
+        case totalSeasons = "totalSeasons"
     }
 }
 
