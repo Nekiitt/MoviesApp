@@ -7,11 +7,7 @@
 
 import UIKit
 
-protocol SrartViewProtocol: AnyObject {
-    
-}
-
-class ViewController: UIViewController {
+class StartViewController: UIViewController {
     
     var myCollectionView: UICollectionView?
     
@@ -62,7 +58,7 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController: UICollectionViewDataSource {
+extension StartViewController: UICollectionViewDataSource {
     
 func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return searchModel.count
@@ -80,7 +76,7 @@ func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection s
     }
 }
 
-extension ViewController: UICollectionViewDelegate {
+extension StartViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == searchModel.count - 1 {
             presenterOne?.loadMoreMovies()

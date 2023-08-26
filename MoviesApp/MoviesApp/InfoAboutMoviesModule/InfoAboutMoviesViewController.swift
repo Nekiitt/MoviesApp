@@ -5,15 +5,24 @@ import UIKit
 
 class InfoAboutMoviesViewController: UIViewController {
     
+    let favoriteButton = UIButton()
     var selectedMovie: InfoAboutSelectMovieModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUi()
+        stateFavoriteStar()
+       
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+          super.viewWillAppear(animated)
+          stateFavoriteStar()
+      }
+    
     func setupUi() {
+        
         // Create a scroll view
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +58,27 @@ class InfoAboutMoviesViewController: UIViewController {
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(imageView)
-
+        
+        // Create a favoriteButton
+        favoriteButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
+        
+        let starImage = UIImage(systemName: "star")
+        favoriteButton.setImage(starImage, for: .normal)
+        
+        let starFillImage = UIImage(systemName: "star.fill")
+        favoriteButton.setImage(starFillImage, for: .selected)
+        
+        favoriteButton.tintColor = .yellow
+        
+        favoriteButton.imageView?.contentMode = .scaleAspectFit
+        //favoriteButton.clipsToBounds = true
+        favoriteButton.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(favoriteButton)
+        
+        
+        
+        
+        
         // Create a stack view
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +97,7 @@ class InfoAboutMoviesViewController: UIViewController {
         ratingLabel.layer.borderWidth = 1.0 // Толщина рамки
         ratingLabel.font = UIFont(name: "Copperplate", size: 20)
         ratingLabel.translatesAutoresizingMaskIntoConstraints = false
-                
+        
         // Create a year label
         let yearLabel = UILabel()
         yearLabel.text = "\(selectedMovie?.released ?? "0")"
@@ -169,6 +198,12 @@ class InfoAboutMoviesViewController: UIViewController {
             imageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             imageView.heightAnchor.constraint(equalToConstant: view.frame.height / 2 + 150),
             
+            
+            favoriteButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 8),
+            favoriteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -8),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 50),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 50),
+            
             stackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
             stackView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             
@@ -190,11 +225,11 @@ class InfoAboutMoviesViewController: UIViewController {
             directorLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             directorLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             directorLabel.heightAnchor.constraint(equalToConstant: 30),
-           
+            
             actorsLabel.topAnchor.constraint(equalTo: directorLabel.bottomAnchor, constant: 20),
             actorsLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             actorsLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-           
+            
             languageLabel.topAnchor.constraint(equalTo: actorsLabel.bottomAnchor, constant: 20),
             languageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             languageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
@@ -210,7 +245,41 @@ class InfoAboutMoviesViewController: UIViewController {
             
         ])
     }
-}
+    
+    @objc func pressed() {
+            favoriteButton.isSelected.toggle()
+            guard let selectedMovie = selectedMovie else { return }
+            
+            var savedMovies = UserDefaults.standard.stringArray(forKey: "FavoriteMovieIDs") ?? []
+            
+            if !savedMovies.contains(selectedMovie.imdbID) {
+                savedMovies.append(selectedMovie.imdbID)
+                UserDefaults.standard.set(savedMovies, forKey: "FavoriteMovieIDs")
+                print("Фильм успешно добавлен в избранное!")
+            } else {
+                savedMovies.removeAll { $0 == selectedMovie.imdbID }
+                UserDefaults.standard.set(savedMovies, forKey: "FavoriteMovieIDs")
+                print("Фильм успешно удален из избранного!")
+            }
+        }
+        
+    
+    func stateFavoriteStar() {
+            guard let selectedMovie = selectedMovie else { return }
+            let savedMovies = UserDefaults.standard.stringArray(forKey: "FavoriteMovieIDs") ?? []
+            
+            favoriteButton.isSelected = savedMovies.contains(selectedMovie.imdbID)
+        }
+    }
+
+
+
+            
+        
+    
+    
+
+
 
 
 

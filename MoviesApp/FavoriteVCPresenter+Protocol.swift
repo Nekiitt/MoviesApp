@@ -1,15 +1,22 @@
+//
+//  FavoriteVCPresenter+Protocol.swift
+//  MoviesApp
+//
+//  Created by Dubrouski Nikita on 23.08.23.
+//
 
 import Foundation
-protocol StartViewControllerProtocol {
+
+protocol SearchViewControllerProtocol1 {
     func getMovies(nameMovies: String, page: Int)
-    func loadMoreMovies()
+    func loadMoreMovies(name: String)
     func getInfoForSelectMovie(id: String, completion: @escaping (InfoAboutSelectMovieModel?) -> Void)
     var infoMoviesModel: InfoAboutSelectMovieModel {get set}
 }
 
-final class StartViewControllerPresenter: StartViewControllerProtocol {
+final class SearchViewPresentor1: SearchViewControllerProtocol1 {
 
-    private weak var view: ViewController?
+    private weak var view: SearchViewController?
     
     let alomafireProvider: AlomafireProviderProtocol
     
@@ -18,7 +25,7 @@ final class StartViewControllerPresenter: StartViewControllerProtocol {
     var currentPage = 1
     var isFetchingMovies = false
     
-    required init(view: ViewController,alomafireProvider: AlomafireProviderProtocol, modelSerchInfo: InfoAboutSelectMovieModel) {
+    required init(view: SearchViewController,alomafireProvider: AlomafireProviderProtocol, modelSerchInfo: InfoAboutSelectMovieModel) {
         self.view = view
         self.alomafireProvider = alomafireProvider
         self.infoMoviesModel = modelSerchInfo
@@ -31,9 +38,10 @@ final class StartViewControllerPresenter: StartViewControllerProtocol {
                 let newMovies = moviesModel.search.map { SearchModel(data: $0) }
                 self.searchModel = newMovies
                 await self.view?.showMovies(newMovies, startIndex: 0)
-                
+                await self.view?.noResults()
             } catch {
                 print(error)
+                await self.view?.resultDone()
             }
         }
     }
@@ -43,6 +51,7 @@ final class StartViewControllerPresenter: StartViewControllerProtocol {
             do {
                 let movieInfo = try await alomafireProvider.getInfoForSelectMovie(IdFilm: id)
                 completion(movieInfo)
+                print(movieInfo.imdbID)
             } catch {
                 print(error)
                 completion(nil)
@@ -51,7 +60,7 @@ final class StartViewControllerPresenter: StartViewControllerProtocol {
     }
     
     
-    func loadMoreMovies() {
+    func loadMoreMovies(name: String) {
             guard !isFetchingMovies else {
                 return // Если уже идет загрузка, то ничего не делаем
             }
@@ -61,7 +70,7 @@ final class StartViewControllerPresenter: StartViewControllerProtocol {
             
             Task {
                 do {
-                    let moviesModel = try await alomafireProvider.getMovies(nameMovies: "home", page: currentPage)
+                    let moviesModel = try await alomafireProvider.getMovies(nameMovies: name, page: currentPage)
                     let newMovies = moviesModel.search.map { SearchModel(data: $0) }
                     
                     DispatchQueue.main.async {

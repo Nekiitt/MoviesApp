@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - Welcome
 struct InfoAboutSelectMovieModel: Codable {
     let title, year, rated, released: String
     let runtime, genre, director, writer: String

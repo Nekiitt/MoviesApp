@@ -56,7 +56,7 @@ class SearchViewController: UIViewController {
         view.addSubview(noResultsLabel)
         noResultsLabel.isHidden = false
         
-        let mosaicLayout = MosaicLayout()
+        let mosaicLayout = MosaicLayout2()
         
         presenterOne = SearchViewPresentor(view: self, alomafireProvider: AlomafireProvider(), modelSerchInfo: InfoAboutSelectMovieModel(title: "", year: "", rated: "", released: "", runtime: "", genre: "", director: "", writer: "", actors: "", plot: "", language: "", country: "", awards: "", poster: "", ratings: [], metascore: "", imdbRating: "", imdbVotes: "", imdbID: "", type: "", dvd: "", totalSeasons: "", boxOffice: "", production: "", website: "", response: ""))
         
