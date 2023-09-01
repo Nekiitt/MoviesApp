@@ -4,7 +4,7 @@
 //
 //  Created by Dubrouski Nikita on 23.08.23.
 //
-
+import RealmSwift
 import Foundation
 
 protocol FavoriteViewControllerProtocol {
@@ -12,6 +12,7 @@ protocol FavoriteViewControllerProtocol {
     var infoMoviesModel: [InfoAboutSelectMovieModel] { get }
     func getInfoForSelectMovie(id: String)
     func getMoviesTask()
+    func getMoviesTaskk()
     
 }
 
@@ -23,6 +24,12 @@ final class FavoriteViewPresentor: FavoriteViewControllerProtocol {
     
     var infoMoviesModel: [InfoAboutSelectMovieModel] = []
     var searchModel: [SearchModel] = []
+    
+    let realmManager: RealmManagerProtocol = RealmManager()
+    
+    var arrayMoviesIdDB: [MoviesIdDataBase] {
+        Array(realmManager.realm.objects(MoviesIdDataBase.self))
+    }
     
     
     required init(view: FavoriteViewController,alomafireProvider: AlomafireProviderProtocol) {
@@ -37,21 +44,22 @@ final class FavoriteViewPresentor: FavoriteViewControllerProtocol {
         Task {
             do {
                 let movieInfo = try await alomafireProvider.getInfoForSelectMovie(IdFilm: id)
-           
-                //print(movieInfo.imdbID)
+                
+                print(movieInfo.imdbID)
             } catch {
                 print(error)
-               
+                
             }
         }
     }
     
-
+    
     func getMoviesTask() {
+        
         if let favoriteMovieIDs = UserDefaults.standard.stringArray(forKey: "FavoriteMovieIDs") {
             let group = DispatchGroup() // Create a dispatch group
             let queue = DispatchQueue(label: "favoriteQueue") // Create a serial dispatch queue
-
+            
             var newMovies: [InfoAboutSelectMovieModel] = [] // Store new movies here
             
             for id in favoriteMovieIDs {
@@ -61,11 +69,11 @@ final class FavoriteViewPresentor: FavoriteViewControllerProtocol {
                     do {
                         let movieInfo = try await self.alomafireProvider.getInfoForSelectMovie(IdFilm: id)
                         let movie = movieInfo
-                            queue.sync { // Synchronize access to the newMovies array
-                                if !self.infoMoviesModel.contains(where: { $0.imdbID == id }) {
-                                    newMovies.append(movie) // Append new movies
-                                }
+                        queue.sync { // Synchronize access to the newMovies array
+                            if !self.infoMoviesModel.contains(where: { $0.imdbID == id }) {
+                                newMovies.append(movie) // Append new movies
                             }
+                        }
                         
                     } catch {
                         print(error.localizedDescription)
@@ -84,8 +92,35 @@ final class FavoriteViewPresentor: FavoriteViewControllerProtocol {
                     let indexPaths = (self.infoMoviesModel.count - newMovies.count ..< self.infoMoviesModel.count).map { index in
                         IndexPath(item: index, section: 0)
                     }
-                    self.view?.myCollectionView?.insertItems(at: indexPaths) // Insert new movies into the collection view
+                    self.view?.collectionView.insertItems(at: indexPaths) // Insert new movies into the collection view
                 }
+            }
+        }
+    }
+    
+    
+    func getMoviesTaskk() {
+        infoMoviesModel.removeAll()
+        
+        // Получаем айди фильмов из базы данных Realm
+        let movieIds = arrayMoviesIdDB.map { $0.id }
+        print(movieIds)
+        print(arrayMoviesIdDB)
+        
+        // Выполняем поиск каждого фильма по его айди
+        Task.detached(priority: .userInitiated) {
+            
+            for movieId in movieIds {
+                do {
+                    let movie = try await self.alomafireProvider.getInfoForSelectMovie(IdFilm: movieId)
+                    self.infoMoviesModel.append(movie)
+                } catch {
+                    print("Error: \(error)")
+                }
+            }
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.view?.collectionView.reloadData()
             }
         }
     }

@@ -9,8 +9,6 @@ import UIKit
 
 final class MosaicCell: UICollectionViewCell {
     
-    static let identifer = "kMosaicCollectionViewCell"
-
     private let loaderView = UIActivityIndicatorView(style: .medium)
     private var isLoading = false
     

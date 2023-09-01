@@ -2,24 +2,31 @@
 
 
 import UIKit
+import RealmSwift
 
 class InfoAboutMoviesViewController: UIViewController {
     
     let favoriteButton = UIButton()
     var selectedMovie: InfoAboutSelectMovieModel?
     
+    let realmManager: RealmManagerProtocol = RealmManager()
+    
+    lazy var arrayMoviesIdDB: [MoviesIdDataBase] = {
+        Array(realmManager.realm.objects(MoviesIdDataBase.self))
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUi()
         stateFavoriteStar()
-       
-        
+        let dr = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        print(dr)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-          super.viewWillAppear(animated)
-          stateFavoriteStar()
-      }
+        super.viewWillAppear(animated)
+        stateFavoriteStar()
+    }
     
     func setupUi() {
         
@@ -240,54 +247,34 @@ class InfoAboutMoviesViewController: UIViewController {
             runTimeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             runTimeLabel.heightAnchor.constraint(equalToConstant: 30),
             runTimeLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
-            
-            
-            
+        
         ])
     }
     
     @objc func pressed() {
-            favoriteButton.isSelected.toggle()
-            guard let selectedMovie = selectedMovie else { return }
-            
-            var savedMovies = UserDefaults.standard.stringArray(forKey: "FavoriteMovieIDs") ?? []
-            
-            if !savedMovies.contains(selectedMovie.imdbID) {
-                savedMovies.append(selectedMovie.imdbID)
-                UserDefaults.standard.set(savedMovies, forKey: "FavoriteMovieIDs")
-                print("Фильм успешно добавлен в избранное!")
-            } else {
-                savedMovies.removeAll { $0 == selectedMovie.imdbID }
-                UserDefaults.standard.set(savedMovies, forKey: "FavoriteMovieIDs")
-                print("Фильм успешно удален из избранного!")
-            }
-        }
+        favoriteButton.isSelected.toggle()
         
-    
-    func stateFavoriteStar() {
-            guard let selectedMovie = selectedMovie else { return }
-            let savedMovies = UserDefaults.standard.stringArray(forKey: "FavoriteMovieIDs") ?? []
-            
-            favoriteButton.isSelected = savedMovies.contains(selectedMovie.imdbID)
+        guard let selectedMovie = selectedMovie else { return }
+        let movieId = selectedMovie.imdbID
+        
+        let movieIndex = arrayMoviesIdDB.firstIndex { $0.id == movieId }
+        
+        if let index = movieIndex {
+            arrayMoviesIdDB.remove(at: index)
+            realmManager.removeMovieId(id: selectedMovie)
+            print("Фильм успешно удален из избранного!")
+        } else {
+            arrayMoviesIdDB.append(MoviesIdDataBase(nameId: movieId))
+            realmManager.addMovieId(id: selectedMovie)
+            print("Фильм успешно добавлен в избранное!")
         }
     }
 
-
-
-            
+    func stateFavoriteStar() {
+        guard let selectedMovie = selectedMovie else { return }
+        let movieId = selectedMovie.imdbID
         
-    
-    
-
-
-
-
-
-     
-        
-  
-   
-
-
-
-        
+        let movieIndex = arrayMoviesIdDB.firstIndex { $0.id == movieId }
+        favoriteButton.isSelected = (movieIndex != nil)
+    }
+}

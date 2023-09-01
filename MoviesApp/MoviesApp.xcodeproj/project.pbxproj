@@ -26,6 +26,8 @@
 		3B89373A2A6F037B007E4247 /* MoviesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8937392A6F037B007E4247 /* MoviesModel.swift */; };
 		3B89373C2A6F03A2007E4247 /* Constans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B89373B2A6F03A2007E4247 /* Constans.swift */; };
 		3BA548422A7C401C0039ABE8 /* InfoAboutMoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA548412A7C401C0039ABE8 /* InfoAboutMoviesViewController.swift */; };
+		3BE289862AA21ABD006216A7 /* MoviesIdDataBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE289852AA21ABD006216A7 /* MoviesIdDataBaseModel.swift */; };
+		3BE289882AA21E38006216A7 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE289872AA21E38006216A7 /* RealmManager.swift */; };
 		3BEBD6392A95657C003D9E54 /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEBD6382A95657C003D9E54 /* FavoriteViewController.swift */; };
 		3BEBD63C2A956651003D9E54 /* FavoritePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEBD63B2A956651003D9E54 /* FavoritePresenter.swift */; };
 		3BEF4EBB2A8E2E8E00AE3F00 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF4EBA2A8E2E8E00AE3F00 /* SearchViewController.swift */; };
@@ -55,6 +57,8 @@
 		3B8937392A6F037B007E4247 /* MoviesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesModel.swift; sourceTree = "<group>"; };
 		3B89373B2A6F03A2007E4247 /* Constans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constans.swift; sourceTree = "<group>"; };
 		3BA548412A7C401C0039ABE8 /* InfoAboutMoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAboutMoviesViewController.swift; sourceTree = "<group>"; };
+		3BE289852AA21ABD006216A7 /* MoviesIdDataBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesIdDataBaseModel.swift; sourceTree = "<group>"; };
+		3BE289872AA21E38006216A7 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		3BEBD6382A95657C003D9E54 /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
 		3BEBD63B2A956651003D9E54 /* FavoritePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePresenter.swift; sourceTree = "<group>"; };
 		3BEF4EBA2A8E2E8E00AE3F00 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				3B8937362A6EFEC2007E4247 /* AlomafireProvider.swift */,
+				3BE289872AA21E38006216A7 /* RealmManager.swift */,
 				3B89373B2A6F03A2007E4247 /* Constans.swift */,
 			);
 			path = Services;
@@ -179,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				3B706E982A7C5D8F00877A85 /* MovieDetailsModel.swift */,
+				3BE289852AA21ABD006216A7 /* MoviesIdDataBaseModel.swift */,
 				3B66E7D02A8045A900A82922 /* InfoAboutSelectMovieModel.swift */,
 				3B4341342A828D8A00184B21 /* SelectedMovieData.swift */,
 				3B8937392A6F037B007E4247 /* MoviesModel.swift */,
@@ -343,6 +349,7 @@
 				3B89371E2A6AB390007E4247 /* StartViewController.swift in Sources */,
 				3BEF4EBB2A8E2E8E00AE3F00 /* SearchViewController.swift in Sources */,
 				3B89373C2A6F03A2007E4247 /* Constans.swift in Sources */,
+				3BE289882AA21E38006216A7 /* RealmManager.swift in Sources */,
 				3B4341352A828D8A00184B21 /* SelectedMovieData.swift in Sources */,
 				3BFDE1CF2A729C3D00D0AFC5 /* StartPresenter.swift in Sources */,
 				3B2724B42A6F0C8F002CA89A /* SearchModel.swift in Sources */,
@@ -351,6 +358,7 @@
 				3B89371A2A6AB390007E4247 /* AppDelegate.swift in Sources */,
 				3B89371C2A6AB390007E4247 /* SceneDelegate.swift in Sources */,
 				3B8937342A6ACC0A007E4247 /* MosaicCell.swift in Sources */,
+				3BE289862AA21ABD006216A7 /* MoviesIdDataBaseModel.swift in Sources */,
 				3B8937372A6EFEC2007E4247 /* AlomafireProvider.swift in Sources */,
 				3B31F88C2A705E1400F0690D /* MainTabBarContoller.swift in Sources */,
 				3BEBD6392A95657C003D9E54 /* FavoriteViewController.swift in Sources */,
