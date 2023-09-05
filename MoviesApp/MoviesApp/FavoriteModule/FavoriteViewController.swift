@@ -35,17 +35,17 @@ final class FavoriteViewController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(collectionView)
-        collectionView.frame = self.view.frame
+        setConstraintForCollectionView()
         
         notificationToken = realmManager.realm.observe { [unowned self] note, realm in
-            self.presenterOne.getMoviesTaskk()
+            self.presenterOne.getMoviesTask()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        presenterOne.getMoviesTaskk()
+        presenterOne.getMoviesTask()
     }
     
     deinit {
@@ -85,5 +85,17 @@ extension FavoriteViewController: UICollectionViewDelegate {
             infoAboutMoviesViewController.selectedMovie = selectedMovie
             self.present(infoAboutMoviesViewController, animated: true, completion: nil)
         }
+    }
+    
+    
+    func setConstraintForCollectionView() {
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
 }

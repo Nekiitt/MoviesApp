@@ -15,7 +15,7 @@ enum MosaicSegmentStyle {
 }
 
 class MosaicLayout: UICollectionViewLayout {
-
+    
     var contentBounds = CGRect.zero
     var cachedAttributes = [UICollectionViewLayoutAttributes]()
     
@@ -24,7 +24,7 @@ class MosaicLayout: UICollectionViewLayout {
         super.prepare()
         
         guard let collectionView = collectionView else { return }
-
+        
         // Reset cached information.
         cachedAttributes.removeAll()
         contentBounds = CGRect(origin: .zero, size: collectionView.bounds.size)
@@ -75,7 +75,7 @@ class MosaicLayout: UICollectionViewLayout {
                 currentIndex += 1
                 lastFrame = rect
             }
-
+            
             // Determine the next segment style.
             switch count - currentIndex {
             case 1:
@@ -96,7 +96,7 @@ class MosaicLayout: UICollectionViewLayout {
             }
         }
     }
-
+    
     /// - Tag: CollectionViewContentSize
     override var collectionViewContentSize: CGSize {
         return contentBounds.size
@@ -153,7 +153,7 @@ class MosaicLayout: UICollectionViewLayout {
             }
         }
     }
-
+    
 }
 
 enum MosaicSegmentStyle2 {
@@ -161,7 +161,7 @@ enum MosaicSegmentStyle2 {
 }
 
 class MosaicLayout2: UICollectionViewLayout {
-
+    
     var contentBounds = CGRect.zero
     var cachedAttributes = [UICollectionViewLayoutAttributes]()
     
@@ -170,7 +170,7 @@ class MosaicLayout2: UICollectionViewLayout {
         super.prepare()
         
         guard let collectionView = collectionView else { return }
-
+        
         // Reset cached information.
         cachedAttributes.removeAll()
         contentBounds = CGRect(origin: .zero, size: collectionView.bounds.size)
@@ -210,7 +210,7 @@ class MosaicLayout2: UICollectionViewLayout {
                 currentIndex += 1
                 lastFrame = rect
             }
-
+            
             // Determine the next segment style.
             switch count - currentIndex {
                 
@@ -224,7 +224,7 @@ class MosaicLayout2: UICollectionViewLayout {
             }
         }
     }
-
+    
     /// - Tag: CollectionViewContentSize
     override var collectionViewContentSize: CGSize {
         return contentBounds.size
@@ -281,5 +281,4 @@ class MosaicLayout2: UICollectionViewLayout {
             }
         }
     }
-
 }

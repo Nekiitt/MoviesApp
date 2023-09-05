@@ -3,8 +3,15 @@
 
 import UIKit
 import RealmSwift
+import WebKit
 
 class InfoAboutMoviesViewController: UIViewController {
+    
+    let webView: WKWebView = {
+        let webView = WKWebView()
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        return webView
+    }()
     
     let favoriteButton = UIButton()
     var selectedMovie: InfoAboutSelectMovieModel?
@@ -19,13 +26,13 @@ class InfoAboutMoviesViewController: UIViewController {
         super.viewDidLoad()
         setupUi()
         stateFavoriteStar()
-        let dr = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        print(dr)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         stateFavoriteStar()
+        watchTrailer()
+        
     }
     
     func setupUi() {
@@ -40,6 +47,13 @@ class InfoAboutMoviesViewController: UIViewController {
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(containerView)
+        
+        // Create a webView
+        //webView.layer.borderColor = UIColor.red.cgColor
+        webView.layer.borderWidth = 2.0
+        webView.layer.cornerRadius = 20
+        webView.clipsToBounds = true
+        containerView.addSubview(webView)
         
         // Create a movie title label
         let titleLabel = UILabel()
@@ -246,8 +260,13 @@ class InfoAboutMoviesViewController: UIViewController {
             runTimeLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             runTimeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             runTimeLabel.heightAnchor.constraint(equalToConstant: 30),
-            runTimeLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
-        
+            
+            webView.topAnchor.constraint(equalTo: runTimeLabel.bottomAnchor, constant: 30),
+            webView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            webView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            webView.heightAnchor.constraint(equalTo: imageView.heightAnchor),
+            webView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
+            
         ])
     }
     
@@ -269,7 +288,29 @@ class InfoAboutMoviesViewController: UIViewController {
             print("Фильм успешно добавлен в избранное!")
         }
     }
-
+    
+    func watchTrailer() {
+        let movieTitle = selectedMovie?.title ?? ""
+        var yearTitle = selectedMovie?.year ?? ""
+        
+        if let hyphenIndex = yearTitle.firstIndex(of: "–") {
+            yearTitle = String(yearTitle[..<hyphenIndex]).trimmingCharacters(in: .whitespaces)
+        }
+        
+        let formattedMovieTitle = movieTitle.replacingOccurrences(of: " ", with: "+")
+        
+        let youtubeURL = "https://www.youtube.com/results?search_query=\(formattedMovieTitle)+\(yearTitle)+trailer"
+        
+        DispatchQueue.global().async {
+            if let url = URL(string: youtubeURL) {
+                let request = URLRequest(url: url)
+                DispatchQueue.main.async { [weak self] in
+                    self?.webView.load(request)
+                }
+            }
+        }
+    }
+    
     func stateFavoriteStar() {
         guard let selectedMovie = selectedMovie else { return }
         let movieId = selectedMovie.imdbID

@@ -16,7 +16,7 @@ final class MosaicCell: UICollectionViewCell {
     var assetIdentifier: String?
     var title: String = ""
     var poster: String = ""
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLoaderView()
@@ -36,39 +36,40 @@ final class MosaicCell: UICollectionViewCell {
     }
     
     private func setupLoaderView() {
-            contentView.addSubview(loaderView)
-            loaderView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                loaderView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-                loaderView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-            ])
-            loaderView.hidesWhenStopped = true
-        }
+        contentView.addSubview(loaderView)
+        loaderView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            loaderView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            loaderView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
+        loaderView.hidesWhenStopped = true
+    }
     
     func configure(model: SearchModel) {
-            title = model.title
-            poster = model.poster
-            
-            isLoading = true
-            loaderView.startAnimating() // Показываем индикатор загрузки
-            
-            guard let url = URL(string: poster) else { return }
-            imageView.loadImage(from: url) { [weak self] image in
-                DispatchQueue.main.async {
-                    self?.isLoading = false
-                    self?.loaderView.stopAnimating() // Прячем индикатор загрузки
-                    self?.imageView.image = image
-                }
+        title = model.title
+        poster = model.poster
+        
+        isLoading = true
+        loaderView.startAnimating()
+        
+        guard let url = URL(string: poster) else { return }
+        imageView.loadImage(from: url) { [weak self] image in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                self?.loaderView.stopAnimating()
+                self?.imageView.image = image
             }
         }
+    }
     
     override func prepareForReuse() {
-            super.prepareForReuse()
-            isLoading = false
-            loaderView.stopAnimating()
-            imageView.image = nil
-        }
+        super.prepareForReuse()
+        isLoading = false
+        loaderView.stopAnimating()
+        imageView.image = nil
+    }
 }
+
 extension UIImageView {
     func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
         DispatchQueue.global().async { [weak self] in

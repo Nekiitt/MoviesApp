@@ -9,7 +9,20 @@ import UIKit
 
 class StartViewController: UIViewController {
     
-    var myCollectionView: UICollectionView?
+    private(set) lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero,
+                                              collectionViewLayout: layout)
+        collectionView.backgroundColor = UIColor.clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(MosaicCell.self, forCellWithReuseIdentifier: MosaicCell.identifer)
+        return collectionView
+    }()
+    
+    private var layout: MosaicLayout = {
+        let mosaicLayout = MosaicLayout()
+        return mosaicLayout
+    }()
     
     var presenterOne: StartViewControllerProtocol?
     var selectedMovie: InfoAboutSelectMovieModel?
@@ -19,35 +32,22 @@ class StartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let view = UIView()
-        view.backgroundColor = .black
-        
         presenterOne = StartViewControllerPresenter(view: self, alomafireProvider: AlomafireProvider(), modelSerchInfo: InfoAboutSelectMovieModel(title: "", year: "", rated: "", released: "", runtime: "", genre: "", director: "", writer: "", actors: "", plot: "", language: "", country: "", awards: "", poster: "", ratings: [], metascore: "", imdbRating: "", imdbVotes: "", imdbID: "", type: "", dvd: "", totalSeasons: "", boxOffice: "", production: "", website: "", response: ""))
         
         presenterOne?.getMovies(nameMovies: "home", page: 1)
         
-        let mosaicLayout = MosaicLayout()
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        view.addSubview(collectionView)
+        setCollectionView()
         
-        myCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mosaicLayout)
-        myCollectionView?.backgroundColor = UIColor.clear
-    
-        myCollectionView?.dataSource = self
-        myCollectionView?.delegate = self
-        
-        myCollectionView?.register(MosaicCell.self, forCellWithReuseIdentifier: MosaicCell.identifer)
-        
-        view.addSubview(myCollectionView ?? UICollectionView())
-        self.view = view
-        
-
-    
     }
     
     func showMovies(_ movies: [SearchModel], startIndex: Int) {
         DispatchQueue.main.async {
             let indexPaths = (startIndex..<startIndex+movies.count).map { IndexPath(item: $0, section: 0) }
             self.searchModel += movies
-            self.myCollectionView?.insertItems(at: indexPaths)
+            self.collectionView.insertItems(at: indexPaths)
         }
     }
     
@@ -55,12 +55,23 @@ class StartViewController: UIViewController {
         print(error)
     }
     
-
+    func setCollectionView() {
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = UIColor.black
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    
 }
 
 extension StartViewController: UICollectionViewDataSource {
     
-func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return searchModel.count
     }
     
@@ -90,7 +101,6 @@ extension StartViewController: UICollectionViewDelegate {
         
         presenterOne?.getInfoForSelectMovie(id: selectedMovie.imdbID) { [weak self] movie in
             self?.selectedMovie = movie
-            //необходимые действия после получения информации о фильме
             DispatchQueue.main.async {
                 let infoAboutMoviesViewController = InfoAboutMoviesViewController()
                 infoAboutMoviesViewController.selectedMovie = movie
@@ -98,5 +108,4 @@ extension StartViewController: UICollectionViewDelegate {
             }
         }
     }
-    
 }

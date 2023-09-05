@@ -12,7 +12,7 @@ protocol FavoriteViewControllerProtocol {
     var infoMoviesModel: [InfoAboutSelectMovieModel] { get }
     func getInfoForSelectMovie(id: String)
     func getMoviesTask()
-    func getMoviesTaskk()
+
     
 }
 
@@ -45,7 +45,7 @@ final class FavoriteViewPresentor: FavoriteViewControllerProtocol {
             do {
                 let movieInfo = try await alomafireProvider.getInfoForSelectMovie(IdFilm: id)
                 
-                print(movieInfo.imdbID)
+                //print(movieInfo.imdbID)
             } catch {
                 print(error)
                 
@@ -53,53 +53,7 @@ final class FavoriteViewPresentor: FavoriteViewControllerProtocol {
         }
     }
     
-    
     func getMoviesTask() {
-        
-        if let favoriteMovieIDs = UserDefaults.standard.stringArray(forKey: "FavoriteMovieIDs") {
-            let group = DispatchGroup() // Create a dispatch group
-            let queue = DispatchQueue(label: "favoriteQueue") // Create a serial dispatch queue
-            
-            var newMovies: [InfoAboutSelectMovieModel] = [] // Store new movies here
-            
-            for id in favoriteMovieIDs {
-                group.enter() // Enter the dispatch group
-                
-                Task.detached {
-                    do {
-                        let movieInfo = try await self.alomafireProvider.getInfoForSelectMovie(IdFilm: id)
-                        let movie = movieInfo
-                        queue.sync { // Synchronize access to the newMovies array
-                            if !self.infoMoviesModel.contains(where: { $0.imdbID == id }) {
-                                newMovies.append(movie) // Append new movies
-                            }
-                        }
-                        
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                    
-                    group.leave() // Leave the dispatch group once the movie information is fetched
-                }
-            }
-            
-            group.notify(queue: .main) { [weak self] in // Perform the updates once all movie information is fetched
-                guard let self = self else { return }
-                self.infoMoviesModel.append(contentsOf: newMovies) // Append new movies to the array
-                newMovies.removeAll() // Clear the newMovies array (safely within the same queue)
-                
-                DispatchQueue.main.async {
-                    let indexPaths = (self.infoMoviesModel.count - newMovies.count ..< self.infoMoviesModel.count).map { index in
-                        IndexPath(item: index, section: 0)
-                    }
-                    self.view?.collectionView.insertItems(at: indexPaths) // Insert new movies into the collection view
-                }
-            }
-        }
-    }
-    
-    
-    func getMoviesTaskk() {
         infoMoviesModel.removeAll()
         
         // Получаем айди фильмов из базы данных Realm

@@ -14,7 +14,7 @@ extension UICollectionViewCell {
 }
 
 final class FavoriteCell: UICollectionViewCell {
-        
+    
     private let loaderView = UIActivityIndicatorView(style: .medium)
     private var isLoading = false
     
@@ -60,9 +60,9 @@ final class FavoriteCell: UICollectionViewCell {
     
     func configure(model: InfoAboutSelectMovieModel) {
         print(model.imdbID)
-      
+        
         isLoading = true
-        loaderView.startAnimating() // Показываем индикатор загрузки
+        loaderView.startAnimating()
         
         guard let url = URL(string: model.poster) else { return }
         imageView.loadImage(from: url) { [weak self] image in
@@ -70,7 +70,7 @@ final class FavoriteCell: UICollectionViewCell {
             DispatchQueue.main.async {
                 if self.isLoading {
                     self.isLoading = false
-                    self.loaderView.stopAnimating() // Прячем индикатор загрузки
+                    self.loaderView.stopAnimating()
                     self.imageView.image = image
                 }
             }

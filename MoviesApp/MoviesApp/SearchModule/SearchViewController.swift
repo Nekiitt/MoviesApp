@@ -33,7 +33,7 @@ class SearchViewController: UIViewController {
     lazy var searchBarForMovie: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = UISearchBar.Style.default
-      
+        
         searchBar.placeholder = " Search..."
         searchBar.sizeToFit()
         searchBar.isTranslucent = false
@@ -46,13 +46,13 @@ class SearchViewController: UIViewController {
         return searchBar
         
     }()
-
+    
     var selectedMovie: InfoAboutSelectMovieModel?
     var searchModel: [SearchModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         view.addSubview(noResultsLabel)
         noResultsLabel.isHidden = false
         
@@ -62,7 +62,7 @@ class SearchViewController: UIViewController {
         
         myCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mosaicLayout)
         myCollectionView?.backgroundColor = UIColor.clear
-    
+        
         myCollectionView?.dataSource = self
         myCollectionView?.delegate = self
         
@@ -78,7 +78,7 @@ class SearchViewController: UIViewController {
     func showMovies(_ movies: [SearchModel], startIndex: Int) {
         DispatchQueue.main.async {
             let indexPaths = (startIndex..<startIndex+movies.count).map { IndexPath(item: $0, section: 0) }
-    
+            
             self.searchModel += movies
             self.myCollectionView?.insertItems(at: indexPaths)
         }
@@ -158,18 +158,18 @@ extension SearchViewController: UICollectionViewDelegate {
         }
     }
 }
+
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchModel = []
-        guard let searchText = searchBar.text else { return }
+        guard var searchText = searchBar.text else { return }
+        searchText = searchText.trimmingCharacters(in: .whitespaces)
         
         presenterOne?.getMovies(nameMovies: searchText, page: 1)
         searchBar.resignFirstResponder()
         myCollectionView?.reloadData()
-        
     }
-    
 }
 
 
