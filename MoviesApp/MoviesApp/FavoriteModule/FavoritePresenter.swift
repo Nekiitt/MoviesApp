@@ -12,8 +12,6 @@ protocol FavoriteViewControllerProtocol {
     var infoMoviesModel: [InfoAboutSelectMovieModel] { get }
     func getInfoForSelectMovie(id: String)
     func getMoviesTask()
-
-    
 }
 
 final class FavoriteViewPresentor: FavoriteViewControllerProtocol {
@@ -31,24 +29,20 @@ final class FavoriteViewPresentor: FavoriteViewControllerProtocol {
         Array(realmManager.realm.objects(MoviesIdDataBase.self))
     }
     
-    
     required init(view: FavoriteViewController,alomafireProvider: AlomafireProviderProtocol) {
         
         self.view = view
         self.alomafireProvider = alomafireProvider
-        
     }
-    
     
     func getInfoForSelectMovie(id: String) {
         Task {
             do {
                 let movieInfo = try await alomafireProvider.getInfoForSelectMovie(IdFilm: id)
                 
-                //print(movieInfo.imdbID)
             } catch {
-                print(error)
                 
+                print(error.localizedDescription)
             }
         }
     }
@@ -62,8 +56,7 @@ final class FavoriteViewPresentor: FavoriteViewControllerProtocol {
         print(arrayMoviesIdDB)
         
         // Выполняем поиск каждого фильма по его айди
-        Task.detached(priority: .userInitiated) {
-            
+        Task.detached {
             for movieId in movieIds {
                 do {
                     let movie = try await self.alomafireProvider.getInfoForSelectMovie(IdFilm: movieId)

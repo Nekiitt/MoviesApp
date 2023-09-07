@@ -8,7 +8,5 @@
 import Foundation
 
 struct Constants {
-    
     static var basicURL = "https://www.omdbapi.com/"
-    
 }

@@ -20,6 +20,5 @@ struct SearchModel {
         imdbID = data.imdbID
         type = data.type
         poster = data.poster
-        
     }
 }

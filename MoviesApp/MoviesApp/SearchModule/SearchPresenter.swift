@@ -15,11 +15,9 @@ protocol SearchViewControllerProtocol {
 }
 
 final class SearchViewPresentor: SearchViewControllerProtocol {
-
+    
     private weak var view: SearchViewController?
-    
     let alomafireProvider: AlomafireProviderProtocol
-    
     var infoMoviesModel: InfoAboutSelectMovieModel
     var searchModel: [SearchModel] = []
     var currentPage = 1
@@ -59,31 +57,28 @@ final class SearchViewPresentor: SearchViewControllerProtocol {
         }
     }
     
-    
     func loadMoreMovies(name: String) {
-            guard !isFetchingMovies else {
-                return // Если уже идет загрузка, то ничего не делаем
-            }
-            
-            currentPage += 1 // Увеличиваем номер страницы
-            isFetchingMovies = true
-            
-            Task {
-                do {
-                    let moviesModel = try await alomafireProvider.getMovies(nameMovies: name, page: currentPage)
-                    let newMovies = moviesModel.search.map { SearchModel(data: $0) }
-                    
-                    DispatchQueue.main.async {
-                        self.searchModel += newMovies // Добавляем новые фильмы к существующему массиву
-                        self.view?.showMovies(newMovies, startIndex: self.searchModel.count - newMovies.count) // Передаем фильмы для отображения
-                    }
-                    
-                    isFetchingMovies = false
-                } catch {
-                    print(error)
-                    isFetchingMovies = false
+        guard !isFetchingMovies else {
+            return // Если уже идет загрузка, то ничего не делаем
+        }
+        
+        currentPage += 1 // Увеличиваем номер страницы
+        isFetchingMovies = true
+        
+        Task {
+            do {
+                let moviesModel = try await alomafireProvider.getMovies(nameMovies: name, page: currentPage)
+                let newMovies = moviesModel.search.map { SearchModel(data: $0) }
+                
+                DispatchQueue.main.async {
+                    self.searchModel += newMovies // Добавляем новые фильмы к существующему массиву
+                    self.view?.showMovies(newMovies, startIndex: self.searchModel.count - newMovies.count) // Передаем фильмы для отображения
                 }
+                isFetchingMovies = false
+            } catch {
+                print(error)
+                isFetchingMovies = false
             }
+        }
     }
-    
 }

@@ -5,7 +5,6 @@
 //  Created by Dubrouski Nikita on 17.08.23.
 //
 
-
 import UIKit
 
 class SearchViewController: UIViewController {
@@ -72,7 +71,6 @@ class SearchViewController: UIViewController {
         view.addSubview(searchBarForMovie)
         
         setupUI()
-        
     }
     
     func showMovies(_ movies: [SearchModel], startIndex: Int) {
@@ -90,7 +88,6 @@ class SearchViewController: UIViewController {
     func resultDone() {
         noResultsLabel.isHidden = false
     }
-    
     
     func showError(_ error: Error) {
         print(error)
@@ -117,7 +114,6 @@ class SearchViewController: UIViewController {
 }
 
 extension SearchViewController: UICollectionViewDataSource {
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return searchModel.count

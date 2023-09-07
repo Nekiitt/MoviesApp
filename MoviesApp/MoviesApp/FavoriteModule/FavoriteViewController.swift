@@ -55,7 +55,6 @@ final class FavoriteViewController: UIViewController {
 
 extension FavoriteViewController: UICollectionViewDataSource {
     
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenterOne.infoMoviesModel.count
     }
@@ -65,7 +64,6 @@ extension FavoriteViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        print(indexPath.item)
         let searchInfo = presenterOne.infoMoviesModel[indexPath.item]
         cell.configure(model: searchInfo)
         
@@ -86,7 +84,6 @@ extension FavoriteViewController: UICollectionViewDelegate {
             self.present(infoAboutMoviesViewController, animated: true, completion: nil)
         }
     }
-    
     
     func setConstraintForCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false

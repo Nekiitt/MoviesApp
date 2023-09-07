@@ -11,7 +11,6 @@ struct MovieDetails {
     let title: String
     let year: String
     let plot: String
-    // Add any other properties you need
     
     init(title: String, year: String, plot: String) {
         self.title = title

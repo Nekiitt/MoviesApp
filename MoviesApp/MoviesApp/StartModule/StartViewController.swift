@@ -65,8 +65,6 @@ class StartViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
-    
 }
 
 extension StartViewController: UICollectionViewDataSource {

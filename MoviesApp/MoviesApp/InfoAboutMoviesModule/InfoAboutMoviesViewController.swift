@@ -32,7 +32,6 @@ class InfoAboutMoviesViewController: UIViewController {
         super.viewWillAppear(animated)
         stateFavoriteStar()
         watchTrailer()
-        
     }
     
     func setupUi() {
@@ -49,7 +48,6 @@ class InfoAboutMoviesViewController: UIViewController {
         scrollView.addSubview(containerView)
         
         // Create a webView
-        //webView.layer.borderColor = UIColor.red.cgColor
         webView.layer.borderWidth = 2.0
         webView.layer.cornerRadius = 20
         webView.clipsToBounds = true
@@ -90,16 +88,10 @@ class InfoAboutMoviesViewController: UIViewController {
         favoriteButton.setImage(starFillImage, for: .selected)
         
         favoriteButton.tintColor = .yellow
-        
         favoriteButton.imageView?.contentMode = .scaleAspectFit
-        //favoriteButton.clipsToBounds = true
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(favoriteButton)
-        
-        
-        
-        
-        
+       
         // Create a stack view
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -218,7 +210,6 @@ class InfoAboutMoviesViewController: UIViewController {
             imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             imageView.heightAnchor.constraint(equalToConstant: view.frame.height / 2 + 150),
-            
             
             favoriteButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 8),
             favoriteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -8),
